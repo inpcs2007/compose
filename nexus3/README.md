@@ -8,7 +8,7 @@ docker-compose dc-nexus3.yml up -d
 ```
 docker exec -it nexus3 /bin/bash
 
-cat /opt/sonatype/sonatype-work/nexus/admin.password
+cat /opt/sonatype/sonatype-work/nexus3/admin.password
 ```
 
 # 访问
