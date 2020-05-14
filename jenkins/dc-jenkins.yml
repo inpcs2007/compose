@@ -2,7 +2,7 @@ version: '3'
 services:
   docker_jenkins:
     restart: always
-    image: jenkins/jenkins:2.60.3
+    image: jenkins/jenkins:lts
     container_name: docker_jenkins
     ports:
       - '8080:8080'
