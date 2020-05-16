@@ -1,0 +1,109 @@
+version: '2'
+services:
+  broker1:
+    image: wurstmeister/kafka:2.11-2.0.0
+    restart: always
+    hostname: broker1
+    container_name: broker1
+    ports:
+      - "9091:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_HOST_NAME: broker1
+      KAFKA_ADVERTISED_PORT: 9091
+      KAFKA_HOST_NAME: broker1
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2182,zoo3:2183
+      KAFKA_LISTENERS: PLAINTEXT://broker1:9091
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:9091
+      #JMX_PORT: 9988
+    volumes:
+      - /Users/incs/app/data/kafka/broker1:/kafka
+    external_links:
+    - zoo1
+    - zoo2
+    - zoo3
+    networks:
+      default:
+        ipv4_address: 172.35.0.5
+
+  broker2:
+    image: wurstmeister/kafka:2.11-2.0.0
+    restart: always
+    hostname: broker2
+    container_name: broker2
+    privileged: true
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ADVERTISED_HOST_NAME: broker2
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_HOST_NAME: broker2
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2182,zoo3:2183
+      KAFKA_LISTENERS: PLAINTEXT://broker2:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:9092
+      #JMX_PORT: 9988
+    volumes:
+      - /Users/incs/app/data/kafka/broker2:/kafka
+    external_links:                # 连接本compose文件以外的container
+    - zoo1
+    - zoo2
+    - zoo3
+    networks:
+      default:
+        ipv4_address: 172.35.0.6
+
+  broker3:
+    image: wurstmeister/kafka:2.11-2.0.0
+    restart: always
+    hostname: broker3
+    container_name: broker3
+    privileged: true
+    ports:
+      - "9093:9092"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ADVERTISED_HOST_NAME: broker3
+      KAFKA_ADVERTISED_PORT: 9093
+      KAFKA_HOST_NAME: broker3
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2182,zoo3:2183
+      KAFKA_LISTENERS: PLAINTEXT://broker3:9093
+      #JMX_PORT: 9988
+    volumes:
+      - /Users/incs/app/data/kafka/broker3:/kafka
+    external_links:                # 连接本compose文件以外的container
+    - zoo1
+    - zoo2
+    - zoo3
+    networks:
+      default:
+        ipv4_address: 172.35.0.7
+
+  kafka-manager:
+    image: sheepkiller/kafka-manager
+    restart: always
+    container_name: kafka-manager
+    hostname: kafka-manager
+    ports:
+      - "9000:9000"
+    links:                         # 连接本compose文件创建的container
+      - broker1
+      - broker2
+      - broker3
+    external_links:                # 连接本compose文件以外的container
+      - zoo1
+      - zoo2
+      - zoo3
+    environment:
+      ZK_HOSTS: zoo1:2181,zoo2:2182,zoo3:2183
+      KAFKA_BROKERS: broker1:9092,broker2:9092,broker3:9092
+      #APPLICATION_SECRET: letmein
+      #KM_ARGS: -Djava.net.preferIPv4Stack=true
+    networks:
+      default:
+        ipv4_address: 172.35.0.8
+
+networks:
+  default:
+    external:                      # 使用已创建的网络
+      name: zook_kafka    
