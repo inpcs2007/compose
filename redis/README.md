@@ -11,3 +11,7 @@ requirepass redispwd
 command: redis-server --requirepass 123456 --appendonly yes
 ```
 
+# 配追redis集群的网络环境
+```
+docker network create --driver bridge --subnet 172.36.0.0/25 --gateway 172.36.0.1  redis_cluster
+```
