@@ -1,4 +1,4 @@
-version: '3'
+version: '3.6'
 services: 
   zookeeper:
     image: wurstmeister/zookeeper
@@ -7,6 +7,10 @@ services:
       - "2181"
     logging:
         driver: "none"
+    privileged: true                                 # 拥有容器内命令执行的权限
+    networks:                                        # docker 网络设置
+        hbase2-network:
+            ipv4_address: 172.37.0.2
 
   hbase:
     image: neuw84/hbase-2.0.2-standalone
@@ -15,6 +19,10 @@ services:
       - zookeeper
     logging:
       driver: "none"
+    privileged: true                                 # 拥有容器内命令执行的权限
+    networks:                                        # docker 网络设置
+        hbase2-network:
+            ipv4_address: 172.37.0.3
     ports:
       - "16010:16010"
     expose:
@@ -25,3 +33,12 @@ services:
       - "16020"
       - "16030"
     command: ["/wait-for-it.sh", "zookeeper:2181", "-t", "10", "--", "/usr/bin/supervisord"]
+
+networks:
+  hbase2-network:
+     driver: bridge
+     ipam:
+       driver: default
+       config:
+          - 
+            subnet: 172.37.0.0/16
