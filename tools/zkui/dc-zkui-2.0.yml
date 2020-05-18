@@ -2,6 +2,6 @@
 version: "2.1"
 services:
   zkui:
-    image: zkui:2.0-SNAPSHOT
+    image: zkfread/zkui:2.0
     ports:
       - "9090:9090"
