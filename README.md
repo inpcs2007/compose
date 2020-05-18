@@ -2,10 +2,15 @@
 
 本项目是使用docker-compose构建中间件的项目，将会通过一个个的样例，可以容易的将各个中间件组件构建起来，包括：
 
-* Gitlab（源代码管理）
-* Mysql（关系数据库）
-* Redis（Nosql数据库）
-* jenkins（CI/CD）
+* Gitlab   （源代码管理）
+* Mysql    （关系数据库）
+* Redis    （Nosql数据库）
+* Jenkins  （CI/CD）
+* Nexus3   （私有仓库）
+* HBase    （hadoop生态的关系型数据库）
+* Flink    （流式处理引擎）
+* TiDB     （NewSQL数据库）
+* Zookeeper（分布式应用协调服务）
 
 ## 目录结构
 ```
