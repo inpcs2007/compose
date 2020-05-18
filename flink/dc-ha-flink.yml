@@ -1,0 +1,55 @@
+
+version: "2"                                                                                          
+services:                                                                                             
+  jobmanager:                                                                                         
+    image: flink                                                                                      
+    ports:                                                                                            
+      - "48085:8081"                                                                                  
+    expose:                                                                                           
+      - "6123"                                                                                        
+    command: jobmanager                                                                               
+    depends_on:                                                                                       
+      - zookeeper                                                                                     
+      - hadoop                                                                                        
+    links:                                                                                            
+      - "zookeeper"                                                                                   
+      - "hadoop"                                                                                     
+  taskmanager:
+    image: flink
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - jobmanager
+      - zookeeper
+      - hadoop
+    command: taskmanager
+    links:
+      - "jobmanager"
+      - "zookeeper"
+      - "hadoop"
+  zookeeper:
+    image: zookeeper
+    ports:
+      - "2181:2182"
+    expose:
+      - "2181"
+  hadoop:
+    image: sequenceiq/hadoop-docker:2.7.1
+    ports:
+      - "50070:50070"
+      - "8088:8088"
+      - "9000:9000"
+      - "8020:8020"
+    expose:
+      - "8020"
+      - "8042"
+      - "8088"
+      - "9000"
+      - "10020"
+      - "19888"
+      - "50010"
+      - "50020"
+      - "50070"
+      - "50075"
+      - "50090"
