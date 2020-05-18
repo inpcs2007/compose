@@ -1,0 +1,7 @@
+
+version: "2.1"
+services:
+  zkui:
+    image: zkui:2.0-SNAPSHOT
+    ports:
+      - "9090:9090"
