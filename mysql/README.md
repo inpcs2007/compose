@@ -46,6 +46,10 @@ CHANGE MASTER TO
 ```
 #### 重启slave容器
 ```
+docker restart mysql-salve
+```
+#### 查看slave状态
+```
 mysql> show slave status\G;
 *************************** 1. row ***************************
                Slave_IO_State: Waiting for master to send event
