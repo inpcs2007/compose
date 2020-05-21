@@ -1,0 +1,24 @@
+version: '2'
+services:
+  mysql-master:
+    image: zkfread/mysql-master:v1.0
+    container_name: mysql-master
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_DATABASE=replicas_db"
+    links:
+      - mysql-slave
+    ports:
+      - "33065:3306"
+    restart: always
+    hostname: mysql-master
+  mysql-slave:
+    image: zkfread/mysql-slave:v1.0
+    container_name: mysql-slave
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_DATABASE=replicas_db"
+    ports:
+      - "33066:3306"
+    restart: always
+    hostname: mysql-slave
